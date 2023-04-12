@@ -59,6 +59,24 @@ class DBStorage:
         """commit all changes of the current database session"""
         self.__session.commit()
 
+    def get(self, cls, id):
+        """retrieves an object of class @cls and @id"""
+        if cls not in classes.values():
+            print("Class does not exist.")
+            return None
+
+        if not isinstance(id, str):
+            print("id attribute must be a string.")
+            return None
+
+        searched_key = f"{cls.__name__}.{id}"
+        all_cls_objs = self.all(cls)
+        if searched_key not in all_cls_objs:
+            print(f"{cls.__name__} with id of {id} not found.")
+            return None
+
+        return all_cls_objs[searched_key]
+
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
