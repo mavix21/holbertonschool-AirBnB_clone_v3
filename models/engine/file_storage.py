@@ -48,6 +48,14 @@ class FileStorage:
         with open(self.__file_path, 'w') as f:
             json.dump(json_objects, f)
 
+    def get(self, cls, id):
+        searched_key = cls.__name__ + '.' + id
+
+        if searched_key in self.__objects:
+            return self.__objects[searched_key]
+
+        return None
+
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
