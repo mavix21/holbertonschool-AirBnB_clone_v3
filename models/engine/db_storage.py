@@ -3,16 +3,14 @@
 Contains the class DBStorage
 """
 
-import models
 from models.amenity import Amenity
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -76,6 +74,14 @@ class DBStorage:
             return None
 
         return all_cls_objs[searched_key]
+
+    def count(self, cls=None):
+        """retrieves an object of class @cls and @id"""
+        if cls and cls not in classes.values():
+            print("Class does not exist.")
+            return
+
+        return len(self.all(cls) if cls else self.all())
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
