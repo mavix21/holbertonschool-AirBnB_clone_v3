@@ -65,6 +65,14 @@ class FileStorage:
 
         return self.__objects[searched_key]
 
+    def count(self, cls=None):
+        """returns the number of objects in storage"""
+        if cls and cls not in classes.values():
+            print("Class does not exist.")
+            return
+
+        return len(self.all(cls) if cls else self.all())
+
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
