@@ -49,12 +49,21 @@ class FileStorage:
             json.dump(json_objects, f)
 
     def get(self, cls, id):
-        searched_key = cls.__name__ + '.' + id
+        """retrieves an object of type @cls with id @id"""
+        if cls not in classes.values():
+            print("Class does not exist.")
+            return None
 
-        if searched_key in self.__objects:
-            return self.__objects[searched_key]
+        if not isinstance(id, str):
+            print("id attribute must be a string.")
+            return None
 
-        return None
+        searched_key = f"{cls.__name__}.{id}"
+        if searched_key not in self.__objects:
+            print(f"{cls.__name__} with id of {id} not found.")
+            return None
+
+        return self.__objects[searched_key]
 
     def reload(self):
         """deserializes the JSON file to __objects"""
