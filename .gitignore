@@ -1,7 +1,7 @@
 # Ignore all __pychache__ folders
 **/__pychache__/
 
-#Ignore all compiled Python files
+# Ignore all compiled Python files
 *.pyc
 *.pyo
 *.pyd
