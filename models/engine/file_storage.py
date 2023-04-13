@@ -48,6 +48,31 @@ class FileStorage:
         with open(self.__file_path, 'w') as f:
             json.dump(json_objects, f, indent=4, sort_keys=True)
 
+    def get(self, cls, id):
+        """retrieves an object of type @cls with id @id"""
+        if cls not in classes.values():
+            print("Class does not exist.")
+            return None
+
+        if not isinstance(id, str):
+            print("id attribute must be a string.")
+            return None
+
+        searched_key = f"{cls.__name__}.{id}"
+        if searched_key not in self.__objects:
+            print(f"{cls.__name__} with id of {id} not found.")
+            return None
+
+        return self.__objects[searched_key]
+
+    def count(self, cls=None):
+        """returns the number of objects in storage"""
+        if cls and cls not in classes.values():
+            print("Class does not exist.")
+            return
+
+        return len(self.all(cls) if cls else self.all())
+
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
