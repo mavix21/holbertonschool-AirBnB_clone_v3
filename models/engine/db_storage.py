@@ -4,7 +4,7 @@ Contains the class DBStorage
 """
 
 from models.amenity import Amenity
-from models.base_model import BaseModel
+from models.base_model import Base, BaseModel
 from models.city import City
 from models.place import Place
 from models.review import Review
