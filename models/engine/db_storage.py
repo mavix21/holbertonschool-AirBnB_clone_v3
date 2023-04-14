@@ -70,7 +70,7 @@ class DBStorage:
         searched_key = f"{cls.__name__}.{id}"
         all_cls_objs = self.all(cls)
         if searched_key not in all_cls_objs:
-            print(f"{cls.__name__} with id of {id} not found.")
+            # print(f"{cls.__name__} with id of {id} not found.")
             return None
 
         return all_cls_objs[searched_key]

@@ -60,7 +60,7 @@ class FileStorage:
 
         searched_key = f"{cls.__name__}.{id}"
         if searched_key not in self.__objects:
-            print(f"{cls.__name__} with id of {id} not found.")
+            # print(f"{cls.__name__} with id of {id} not found.")
             return None
 
         return self.__objects[searched_key]
