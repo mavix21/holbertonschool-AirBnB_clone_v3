@@ -55,7 +55,18 @@ class DBStorage:
 
     def save(self):
         """commit all changes of the current database session"""
-        self.__session.commit()
+        if not self.__session:
+            print("No session established")
+            return
+
+        try:
+            self.__session.commit()
+        except Exception as e:
+            msg_0 = str(e).partition('\n')[0]
+            print(msg_0 if msg_0 else str(e))
+            self.__session.rollback()
+            raise e
+
 
     def get(self, cls, id):
         """retrieves an object of class @cls and @id"""
