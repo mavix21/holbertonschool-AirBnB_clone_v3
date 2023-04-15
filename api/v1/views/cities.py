@@ -57,6 +57,9 @@ def create_city(state_id):
     if not city_data:
         abort(400, description="Not a JSON")
 
+    if "name" not in city_data:
+        abort(400, description="Missing name")
+
     # New city must be inserted with parameter state_id
     # city_data["state_id"] = searched_state.id
 
