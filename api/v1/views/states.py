@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines the routes for app_views"""
+"""This module defines the routes for states"""
 from flask import jsonify, abort, request
 from . import app_views
 from models import storage
@@ -8,6 +8,7 @@ from models.state import State
 
 @app_views.route("/states", strict_slashes=False, methods=["GET"])
 def show_states():
+    """retrieves the list of states in storage"""
     state_objs = storage.all(State).values()
     JSON_states = [state.to_dict() for state in state_objs]
 
