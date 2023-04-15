@@ -38,7 +38,7 @@ def delete_user(user_id):
     return jsonify({}), 200
 
 
-@app_views.route("/users/", methods=["POST"])
+@app_views.route("/users/", strict_slashes=False, methods=["POST"])
 def create_user():
     user_data = request.get_json(silent=True)
     if not user_data:
@@ -56,7 +56,7 @@ def create_user():
     return jsonify(new_user.to_dict()), 201
 
 
-@app_views.route("/users/<user_id>", methods=["PUT"])
+@app_views.route("/users/<user_id>", strict_slashes=False, methods=["PUT"])
 def update_user(user_id):
     searched_user = storage.get(User, user_id)
     if not searched_user:
