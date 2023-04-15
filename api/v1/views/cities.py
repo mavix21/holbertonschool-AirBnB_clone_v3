@@ -20,7 +20,8 @@ def show_state_cities(state_id):
     return jsonify([city.to_dict() for city in list_of_cities])
 
 
-@app_views.route("/cities/<city_id>", methods=["GET"])
+@app_views.route("/cities/<city_id>", methods=["GET"],
+                 strict_slashes=True)
 def show_city_by_id(city_id):
     """retrieves a city dictionary of a specified @city_id"""
     searched_city = storage.get(City, city_id)
@@ -30,7 +31,8 @@ def show_city_by_id(city_id):
     return jsonify(searched_city.to_dict())
 
 
-@app_views.route("/cities/<city_id>", methods=["DELETE"])
+@app_views.route("/cities/<city_id>", methods=["DELETE"],
+                 strict_slashes=True)
 def delete_city(city_id):
     """deletes a city of a specified @city_id"""
     searched_city = storage.get(City, city_id)
@@ -43,7 +45,8 @@ def delete_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route("/states/<state_id>/cities", methods=["POST"])
+@app_views.route("/states/<string:state_id>/cities", methods=["POST"],
+                 strict_slashes=False)
 def create_city(state_id):
     """creates a city linked to a state with id @state_id"""
     searched_state = storage.get(State, state_id)
@@ -52,24 +55,25 @@ def create_city(state_id):
 
     city_data = request.get_json(silent=True)
     if not city_data:
-        return jsonify({"error": "Not a JSON"}), 400
-
-    if "name" not in city_data:
-        return jsonify({"error": "Missing name"}), 400
+        abort(400, description="Not a JSON")
 
     # New city must be inserted with parameter state_id
-    city_data["state_id"] = searched_state.id
+    # city_data["state_id"] = searched_state.id
 
-    ignored_keys = ["id", "created_at", "updated_at"]
+    # ignored_keys = ["id", "created_at", "updated_at"]
 
-    new_city = City(**{k: v for k, v in city_data.items()
-                       if k not in ignored_keys})
+    # city_data = {k: v for k, v in city_data.items()
+    #            if k not in ignored_keys}
+
+    new_city = City(**city_data)
+    new_city.state_id = state_id
     new_city.save()
 
     return jsonify(new_city.to_dict()), 201
 
 
-@app_views.route("/cities/<city_id>", methods=["PUT"])
+@app_views.route("/cities/<city_id>", methods=["PUT"],
+                 strict_slashes=True)
 def update_city(city_id):
     searched_city = storage.get(City, city_id)
     if not searched_city:
