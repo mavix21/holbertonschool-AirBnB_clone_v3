@@ -96,6 +96,7 @@ def update_place(place_id):
 
     return jsonify(searched_place.to_dict()), 200
 
+
 @app_views.route("/places_search", methods=["POST"],
                  strict_slashes=False)
 def places_search():
@@ -143,4 +144,3 @@ def places_search():
     places_dicts = [place.to_dict() for place in places_list]
 
     return jsonify(places_dicts)
-
