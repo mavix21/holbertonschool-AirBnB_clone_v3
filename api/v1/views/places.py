@@ -103,10 +103,9 @@ def places_search():
     """retrieves all Place objects depending of the JSON in the body of the 
     request."""
 
-    try:
-        search_data = request.get_json()
-    except Exception:
-        return jsonify({"error": "Not a JSON"}), 400
+    search_data = request.get_json()
+    if search_data is None:
+        abort(400, description="Not a JSON")
 
     if not search_data:
         places = storage.all(Place).values()
