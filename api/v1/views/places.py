@@ -6,7 +6,8 @@ from models import storage
 from models.place import Place
 from models.city import City
 from models.user import User
-
+from models.state import State
+from models.amenity import Amenity
 
 @app_views.route("/cities/<city_id>/places", strict_slashes=False,
                  methods=["GET"])
@@ -94,3 +95,52 @@ def update_place(place_id):
     searched_place.save()
 
     return jsonify(searched_place.to_dict()), 200
+
+@app_views.route("/places_search", methods=["POST"],
+                 strict_slashes=False)
+def places_search():
+    """retrieves all Place objects depending of the JSON in the body of the 
+    request."""
+
+    try:
+        search_data = request.get_json()
+    except Exception:
+        return jsonify({"error": "Not a JSON"}), 400
+
+    if not search_data:
+        places = storage.all(Place).values()
+        return jsonify([place.to_dict() for place in places])
+
+    states = search_data.get("states", [])
+    cities = search_data.get("cities", [])
+    amenities = search_data.get("amenities", [])
+
+    # Get all places related to states
+    places_list = []
+    cities_searched = []
+    for state_id in states:
+        state = storage.get(State, state_id)
+        if state:
+            for city in state.cities:
+                cities_searched.append(city)
+                places_list += city.places
+
+    # Get all places related to cities
+    for city_id in cities:
+        city = storage.get(City, city_id)
+        if city and city not in cities_searched:
+            cities_searched.append(city)
+            places_list += city.places
+
+    if (not states and not cities) or not places_list:
+        places_list = storage.all(Place).values()
+
+    amenities = [storage.get(Amenity, am_id) for am_id in amenities]
+    places_list = [place for place in places_list
+                   if all([amenity in place.amenities
+                           for amenity in amenities])]
+
+    places_dicts = [place.to_dict() for place in places_list]
+
+    return jsonify(places_dicts)
+
