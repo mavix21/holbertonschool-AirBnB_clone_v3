@@ -21,7 +21,7 @@ def show_state_cities(state_id):
 
 
 @app_views.route("/cities/<city_id>", methods=["GET"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def show_city_by_id(city_id):
     """retrieves a city dictionary of a specified @city_id"""
     searched_city = storage.get(City, city_id)
@@ -32,7 +32,7 @@ def show_city_by_id(city_id):
 
 
 @app_views.route("/cities/<city_id>", methods=["DELETE"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def delete_city(city_id):
     """deletes a city of a specified @city_id"""
     searched_city = storage.get(City, city_id)
@@ -76,7 +76,7 @@ def create_city(state_id):
 
 
 @app_views.route("/cities/<city_id>", methods=["PUT"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def update_city(city_id):
     searched_city = storage.get(City, city_id)
     if not searched_city:

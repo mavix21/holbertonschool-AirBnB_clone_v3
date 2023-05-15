@@ -22,7 +22,7 @@ def show_place_reviews(place_id):
 
 
 @app_views.route("/reviews/<review_id>", methods=["GET"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def show_review_by_id(review_id):
     """retrieves a review dictionary of a specified @review_id"""
     searched_review = storage.get(Review, review_id)
@@ -33,7 +33,7 @@ def show_review_by_id(review_id):
 
 
 @app_views.route("/reviews/<review_id>", methods=["DELETE"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def delete_review(review_id):
     """deletes a review of a specified @review_id"""
     searched_review = storage.get(Review, review_id)
@@ -76,7 +76,7 @@ def create_review(place_id):
 
 
 @app_views.route("/reviews/<review_id>", methods=["PUT"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def update_review(review_id):
     """updates a review"""
     searched_review = storage.get(Review, review_id)

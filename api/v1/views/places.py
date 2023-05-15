@@ -9,6 +9,7 @@ from models.user import User
 from models.state import State
 from models.amenity import Amenity
 
+
 @app_views.route("/cities/<city_id>/places", strict_slashes=False,
                  methods=["GET"])
 def show_city_places(city_id):
@@ -23,7 +24,7 @@ def show_city_places(city_id):
 
 
 @app_views.route("/places/<place_id>", methods=["GET"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def show_place_by_id(place_id):
     """retrieves a place dictionary of a specified @place_id"""
     searched_place = storage.get(Place, place_id)
@@ -34,7 +35,7 @@ def show_place_by_id(place_id):
 
 
 @app_views.route("/places/<place_id>", methods=["DELETE"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def delete_place(place_id):
     """deletes a place of a specified @place_id"""
     searched_place = storage.get(Place, place_id)
@@ -77,7 +78,7 @@ def create_place(city_id):
 
 
 @app_views.route("/places/<place_id>", methods=["PUT"],
-                 strict_slashes=True)
+                 strict_slashes=False)
 def update_place(place_id):
     searched_place = storage.get(Place, place_id)
     if not searched_place:
@@ -100,7 +101,7 @@ def update_place(place_id):
 @app_views.route("/places_search", methods=["POST"],
                  strict_slashes=False)
 def places_search():
-    """retrieves all Place objects depending of the JSON in the body of the 
+    """retrieves all Place objects depending of the JSON in the body of the
     request."""
 
     search_data = request.get_json()
