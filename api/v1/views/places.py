@@ -146,7 +146,12 @@ def places_search():
 #    places_list = [place for place in places_list
 #                   if all([amenity in place.amenities
 #                           for amenity in amenities_obj])]
-#
+    for place in places_list:
+        for amenity in place.amenities:
+            if amenity.id not in amenities:
+                places_list.remove(place)
+                break
+
     places_dicts = [place.to_dict().pop('amenities', None)
                     for place in places_list]
 
