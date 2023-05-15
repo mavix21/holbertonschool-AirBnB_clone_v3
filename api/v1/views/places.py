@@ -133,10 +133,16 @@ def places_search():
             cities_searched.append(city)
             places_list += city.places
 
-    if (not states and not cities) or not places_list:
+    ## if (not states and not cities) or not places_list:
+    if not places_list:
         places_list = storage.all(Place).values()
 
-    amenities_obj = [storage.get(Amenity, am_id) for am_id in amenities]
+    amenities_obj = []
+    for amenity_id in amenities:
+        amenity = storage.get(Amenity, amenity_id)
+        if amenity:
+            amenities_obj.append(amenity)
+
     places_list = [place for place in places_list
                    if all([amenity in place.amenities
                            for amenity in amenities_obj])]
