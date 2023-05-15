@@ -137,22 +137,25 @@ def places_search():
     if not places_list:
         places_list = storage.all(Place).values()
 
-#    amenities_obj = []
-#    for amenity_id in amenities:
-#        amenity = storage.get(Amenity, amenity_id)
-#        if amenity:
-#            amenities_obj.append(amenity)
-#
-#    places_list = [place for place in places_list
-#                   if all([amenity in place.amenities
-#                           for amenity in amenities_obj])]
-    for place in places_list:
-        for amenity in place.amenities:
-            if amenity.id not in amenities:
-                places_list.remove(place)
-                break
+    amenities_obj = []
+    for amenity_id in amenities:
+        amenity_obj = storage.get(Amenity, amenity_id)
+        if amenity_obj:
+            amenities_obj.append(amenity_obj)
 
-    places_dicts = [place.to_dict().pop('amenities', None)
-                    for place in places_list]
+    places_list = [place for place in places_list
+                   if all([amenity in place.amenities
+                           for amenity in amenities_obj])]
+#    filter_places = []
+#    for place in places_list:
+#        am_ids = [am.id for am in place.amenities]
+#        for amenity_id in amenities:
+#            if amenity_id not in am_ids:
+#                break
+#
+#        filter_places.append(place)
+
+    places_dicts = [{k: v for k, v in place.to_dict().items()
+                    if k != 'amenities'} for place in places_list]
 
     return jsonify(places_dicts)
